@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>反射神経テスト</title>
+<style>
+body {
+    text-align: center;
+    font-family: Arial;
+}
+#box {
+    width: 300px;
+    height: 200px;
+    margin: 50px auto;
+    background-color: gray;
+    line-height: 200px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+}
+</style>
+</head>
+<body>
+
+<h1>⚡ 反射神経テスト</h1>
+<button onclick="startTest()">スタート</button>
+
+<div id="box">スタートを押してください</div>
+
+<p id="result"></p>
+
+<script>
+let startTime;
+let timeoutID;
+let isReady = false;
+
+function startTest() {
+    const box = document.getElementById("box");
+    const result = document.getElementById("result");
+
+    box.style.backgroundColor = "gray";
+    box.textContent = "待ってください...";
+    result.textContent = "";
+    isReady = false;
+
+    const randomTime = Math.random() * 3000 + 2000; // 2〜5秒
+
+    timeoutID = setTimeout(() => {
+        box.style.backgroundColor = "red";
+        box.textContent = "クリック！";
+        startTime = Date.now();
+        isReady = true;
+    }, randomTime);
+}
+
+document.getElementById("box").addEventListener("click", function() {
+    const result = document.getElementById("result");
+
+    if (!isReady) {
+        clearTimeout(timeoutID);
+        result.textContent = "フライング！もう一度やりましょう。";
+        return;
+    }
+
+    const reactionTime = Date.now() - startTime;
+    result.textContent = "あなたの反応時間は " + reactionTime + " ms です！";
+    isReady = false;
+});
+</script>
+
+</body>
+</html>
